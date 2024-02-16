@@ -1,2 +1,2 @@
 # globalfy-test
-Calendário de eventos
+Events Calendar
