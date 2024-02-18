@@ -50,7 +50,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiResponse({ status: 200, description: 'Usuário excluído com sucesso.' })
+  @ApiResponse({ status: 200 })
   @ApiNotFoundResponse({ description: 'User not found!' })
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
   async delete(@Param('id') id: string): Promise<void | Error> {
