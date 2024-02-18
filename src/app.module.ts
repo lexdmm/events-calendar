@@ -22,7 +22,9 @@ import { UserModule } from './user/user.module'
           database: configService.get('DB_NAME'),
           synchronize: configService.get('DB_SYNC'),
           entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-          autoLoadEntities: configService.get('ENTITIES_AUTO_LOADS')
+          autoLoadEntities: configService.get('ENTITIES_AUTO_LOADS'),
+          migrations: [join(__dirname, './migration/*{.ts,.js}')],
+          migrationsRun: true
         }
       }
     }),
