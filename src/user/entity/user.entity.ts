@@ -7,7 +7,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ length: 20, nullable: false })
+  @Column({ length: 30, nullable: false })
   providerId: string
 
   @Column({ length: 300, nullable: false })
