@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
@@ -8,6 +9,8 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
   const configService = app.get<ConfigService>(ConfigService)
   const PORT = Number(configService.get<string>('PORT'))
+
+  app.useGlobalPipes(new ValidationPipe())
 
   const options = new DocumentBuilder()
     .setTitle('Events Calendar')
