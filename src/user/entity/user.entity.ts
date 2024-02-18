@@ -5,7 +5,7 @@ import { Column, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } 
 @Index(['providerId'], { unique: true })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Column({ length: 20, nullable: false })
   providerId: string
@@ -19,7 +19,10 @@ export class User {
   @Column({ default: false })
   isEventCreator: boolean
 
-  @ManyToMany(() => Event, (event) => event.users)
+  @Column({ default: false })
+  isConfirmed: boolean
+
+  @ManyToMany(() => Event, (event) => event.users, { cascade: true })
   @JoinTable()
   events: Event[]
 }

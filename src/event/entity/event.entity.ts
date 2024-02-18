@@ -12,10 +12,10 @@ import { User } from '../../user/entity/user.entity'
 @Entity()
 export class Event {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
   @Index()
-  @Column({ length: 20, nullable: false })
+  @Column()
   userId: number
 
   @Column({ length: 250, nullable: false })

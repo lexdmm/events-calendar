@@ -6,16 +6,19 @@ import { User } from './user.entity'
 @Index(['user', 'event'], { unique: true })
 export class UserEvent {
   @PrimaryGeneratedColumn('uuid')
-  id: number
+  id: string
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { cascade: true })
   @JoinColumn()
   user: User
 
-  @ManyToOne(() => Event)
+  @ManyToOne(() => Event, { cascade: true })
   @JoinColumn()
   event: Event
 
   @Column({ default: false })
   isEventCreator: boolean
+
+  @Column({ default: false })
+  isConfirmed: boolean
 }
