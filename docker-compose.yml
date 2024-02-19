@@ -10,3 +10,11 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+
+  adminer:
+    image: adminer
+    container_name: ctr-adminer
+    environment:
+      - DATABASE_URL=postgres://root:root@database:5432/db_calendar
+    ports:
+      - 5000:8080

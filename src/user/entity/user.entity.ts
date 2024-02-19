@@ -1,9 +1,10 @@
-import { Event } from 'src/event/entity/event.entity'
-import { Column, Entity, Index, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { EventUser } from 'src/event/entity/event.user.entity'
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
 @Index(['providerId'], { unique: true })
 export class User {
+  @Index({ unique: true })
   @PrimaryGeneratedColumn('uuid')
   id: string
 
@@ -16,13 +17,6 @@ export class User {
   @Column({ length: 200, nullable: false })
   email: string
 
-  @Column({ default: false })
-  isEventCreator: boolean
-
-  @Column({ default: false })
-  isConfirmed: boolean
-
-  @ManyToMany(() => Event, (event) => event.users, { cascade: true })
-  @JoinTable()
-  events: Event[]
+  @OneToMany(() => EventUser, (eventUser) => eventUser.user)
+  userEvents: EventUser[]
 }
