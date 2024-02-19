@@ -10,14 +10,14 @@ export class CreateUserDto {
   providerId: string
 
   @IsString()
-  @IsNotEmpty({ message: 'The name is not empty' })
+  @IsNotEmpty({ message: 'The name cannot be empty' })
   @NotEquals(null)
   @ValidateIf((value) => value !== undefined)
   @ApiProperty({ example: 'Jhon Piper' })
   name: string
 
   @IsString()
-  @IsNotEmpty({ message: 'The e-mail is not empty' })
+  @IsNotEmpty({ message: 'The e-mail cannot be empty' })
   @NotEquals(null)
   @ValidateIf((value) => value !== undefined)
   @ApiProperty({ example: 'piper@test.com' })
@@ -26,7 +26,7 @@ export class CreateUserDto {
 
 export class UpdateUserDto {
   @IsString()
-  @IsNotEmpty({ message: 'The name is not empty' })
+  @IsNotEmpty({ message: 'The name cannot be empty' })
   @NotEquals(null)
   @ValidateIf((value) => value !== undefined)
   @IsOptional()
@@ -34,7 +34,7 @@ export class UpdateUserDto {
   name: string
 
   @IsString()
-  @IsNotEmpty({ message: 'The e-mail is not empty' })
+  @IsNotEmpty({ message: 'The e-mail cannot be empty' })
   @NotEquals(null)
   @ValidateIf((value) => value !== undefined || value !== '')
   @IsOptional()

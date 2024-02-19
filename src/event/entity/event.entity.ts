@@ -1,25 +1,20 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn
-} from 'typeorm'
-import { User } from '../../user/entity/user.entity'
+import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { EventUser } from './event.user.entity'
 
 @Entity()
 export class Event {
+  @Index({ unique: true })
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Index()
-  @Column()
-  userId: number
+  @Column({ default: false })
+  isPublic: boolean
 
   @Column({ length: 250, nullable: false })
   title: string
+
+  @Column({ type: 'text', default: '' })
+  description: string
 
   @Column({ nullable: false, type: 'date' })
   date: Date
@@ -30,10 +25,6 @@ export class Event {
   @Column({ nullable: false, type: 'time' })
   endTime: Date
 
-  @ManyToOne(() => User)
-  creator: User
-
-  @ManyToMany(() => User, (user) => user.events)
-  @JoinTable()
-  users: User[]
+  @OneToMany(() => EventUser, (event) => event.event)
+  eventEvents: EventUser[]
 }
