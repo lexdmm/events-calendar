@@ -1,22 +1,18 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { UserService } from '../user/user.service'
 import { AddEventUserDto } from './dto/event.user.dto'
 import { EventUser } from './entity/event.user.entity'
-import { EventService } from './event.service'
 
 @Injectable()
 export class EventUserService {
   constructor(
     @InjectRepository(EventUser)
-    private eventUserRepository: Repository<EventUser>,
-    private userService: UserService,
-    private eventService: EventService
+    private eventUserRepository: Repository<EventUser>
   ) {}
 
   /**
-   * @
+   * @description add a new user to the event
    * @param AddEventUserDto
    * @returns EventUser
    */
@@ -41,6 +37,11 @@ export class EventUserService {
     return eventUser
   }
 
+  /**
+   * @description updates user status in event
+   * @param AddEventUserDto
+   * @returns
+   */
   async updateUserEventConfirmed(data: AddEventUserDto): Promise<EventUser> {
     const evtUser = await this.findEventUserBy(data.eventId, data.userId)
 

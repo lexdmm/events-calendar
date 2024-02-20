@@ -66,7 +66,7 @@ export class EventController {
   }
 
   @Patch('user/update')
-  @ApiResponse({ status: 201, description: 'update user confirmed status', type: Event })
+  @ApiResponse({ status: 201, description: 'updates user status in event', type: Event })
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
   updateUserEventConfirmed(@Body() data: AddEventUserDto): Promise<EventUser> {
     return this.eventUserService.updateUserEventConfirmed(data)
