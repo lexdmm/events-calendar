@@ -1,16 +1,16 @@
 import { User } from 'src/user/entity/user.entity'
-import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { Event } from './event.entity'
 
 @Entity()
-@Index(['user', 'event', 'isEventOwner', 'isConfirmed'], { unique: true })
+@Index(['userId', 'eventId', 'isEventOwner', 'isConfirmed'], { unique: true })
 export class EventUser {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Index()
-  @Column({ length: 30, nullable: false, name: 'user_id_owner' })
-  userId: string
+  @Column({ length: 50, nullable: false })
+  userIdOwner: string
 
   @Column({ default: false })
   isEventOwner: boolean
@@ -18,9 +18,20 @@ export class EventUser {
   @Column({ default: false })
   isConfirmed: boolean
 
-  @ManyToOne(() => User, (user) => user.userEvents)
+  @Column({ nullable: false })
+  userId: string
+
+  @Column({ nullable: false })
+  eventId: string
+
+  @ManyToOne(() => User, (user) => user.users)
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User
 
-  @ManyToOne(() => Event, (event) => event.eventEvents)
+  @ManyToOne(() => Event, (event) => event.events, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE'
+  })
+  @JoinColumn({ name: 'eventId', referencedColumnName: 'id' })
   event: Event
 }

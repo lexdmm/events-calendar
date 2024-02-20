@@ -25,6 +25,9 @@ export class Event {
   @Column({ nullable: false, type: 'time' })
   endTime: Date
 
-  @OneToMany(() => EventUser, (event) => event.event)
-  eventEvents: EventUser[]
+  @OneToMany(() => EventUser, (event) => event.event, {
+    cascade: ['remove', 'update'],
+    orphanedRowAction: 'delete'
+  })
+  events: EventUser[]
 }

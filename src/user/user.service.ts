@@ -8,11 +8,11 @@ import { User } from './entity/user.entity'
 export class UserService {
   constructor(
     @InjectRepository(User) //Ta dizendo que o papel de criar a instancia é do repositório
-    private _userRepository: Repository<User>
+    private userRepository: Repository<User>
   ) {}
 
   async findAll(): Promise<User[] | Error> {
-    const users = await this._userRepository
+    const users = await this.userRepository
       .find()
       .then()
       .catch((error) => {
@@ -23,7 +23,7 @@ export class UserService {
   }
 
   async findUserBy(id: string): Promise<User | Error> {
-    const user = await this._userRepository
+    const user = await this.userRepository
       .findOneBy({ id })
       .then()
       .catch((error) => {
@@ -43,8 +43,8 @@ export class UserService {
         isConfirmed: false,
         isEventCreator: false
       }
-      const user = this._userRepository.create(dataUser)
-      return await this._userRepository.save(user)
+      const user = this.userRepository.create(dataUser)
+      return await this.userRepository.save(user)
     } catch (error) {
       return new Error(error.message)
     }
@@ -53,10 +53,10 @@ export class UserService {
   async update(id: string, data: UpdateUserDto): Promise<User | Error> {
     try {
       const user = await this.findUserBy(id)
-      await this._userRepository.update(user, { ...data }).catch((error) => {
+      await this.userRepository.update(user, { ...data }).catch((error) => {
         throw error
       })
-      return this._userRepository.create({ ...user, ...data })
+      return this.userRepository.create({ ...user, ...data })
     } catch (error) {
       return new Error(error.message)
     }
@@ -65,7 +65,7 @@ export class UserService {
   async delete(id: string): Promise<void | Error> {
     try {
       const user = await this.findUserBy(id)
-      await this._userRepository.delete(user)
+      await this.userRepository.delete(user)
     } catch (error) {
       return new Error(error.message)
     }

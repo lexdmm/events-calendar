@@ -18,5 +18,5 @@ export class User {
   email: string
 
   @OneToMany(() => EventUser, (eventUser) => eventUser.user)
-  userEvents: EventUser[]
+  users: EventUser[]
 }

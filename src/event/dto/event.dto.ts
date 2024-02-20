@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsDate, IsNotEmpty, IsString, Matches, NotEquals, ValidateIf } from 'class-validator'
+import { IsDate, IsNotEmpty, IsOptional, IsString, NotEquals, ValidateIf } from 'class-validator'
 
-export class EventDto {
+export class CreateEventDto {
   @IsString()
   @IsNotEmpty({ message: 'The userId cannot be empty' })
   @NotEquals(null)
@@ -20,18 +20,18 @@ export class EventDto {
   @IsString()
   @ValidateIf((value) => value !== undefined)
   @ApiProperty({ example: 'Event descritption' })
+  @IsOptional()
   description: string
 
   @IsDate()
-  @Transform(({ value }) => new Date(value))
   @IsNotEmpty({ message: 'The date cannot be empty' })
   @NotEquals(null)
-  @ValidateIf((value) => value !== undefined)
-  @ApiProperty({ example: 'Event date' })
+  @ValidateIf((value) => value.date !== undefined)
+  @Transform(({ value }) => new Date(value))
+  @ApiProperty({ example: '2023/02/20' })
   date: Date
 
-  @IsString()
-  @Matches(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/)
+  @IsDate()
   @Transform(({ value }) => {
     const [hour, minute, second] = value.split(':').map(Number)
     return new Date(0, 0, 0, hour, minute, second)
@@ -42,8 +42,7 @@ export class EventDto {
   @ApiProperty({ example: '14:30:00', description: 'Only accepts hour, minute and second format' })
   startTime: Date
 
-  @IsString()
-  @Matches(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/)
+  @IsDate()
   @Transform(({ value }) => {
     const [hour, minute, second] = value.split(':').map(Number)
     return new Date(0, 0, 0, hour, minute, second)
