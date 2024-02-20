@@ -6,7 +6,7 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger'
-import { CreateEventDto } from './dto/event.dto'
+import { CreateEventDto, UpdateEventDto } from './dto/event.dto'
 import { AddEventUserDto } from './dto/event.user.dto'
 import { Event } from './entity/event.entity'
 import { EventUser } from './entity/event.user.entity'
@@ -35,7 +35,7 @@ export class EventController {
 
   @Get(':id')
   @ApiResponse({ status: 200, description: 'Returns a event by ID.', type: Event })
-  @ApiNotFoundResponse({ description: 'User not found!' })
+  @ApiNotFoundResponse({ description: 'Event not found!' })
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
   findEventBy(@Param('id') id: string): Promise<Event> {
     return this.eventService.findEventBy(id)
@@ -46,6 +46,14 @@ export class EventController {
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
   create(@Body() user: CreateEventDto): Promise<Event> {
     return this.eventService.create(user)
+  }
+
+  @Patch(':id')
+  @ApiResponse({ status: 201, description: 'update event', type: Event })
+  @ApiNotFoundResponse({ description: 'Event not found!' })
+  @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
+  update(@Param('id') id: string, @Body() data: UpdateEventDto): Promise<Event> {
+    return this.eventService.update(id, data)
   }
 
   @Delete(':id')

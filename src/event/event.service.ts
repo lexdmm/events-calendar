@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { User } from 'src/user/entity/user.entity'
 import { Repository } from 'typeorm'
 import { UserService } from '../user/user.service'
-import { CreateEventDto } from './dto/event.dto'
+import { CreateEventDto, UpdateEventDto } from './dto/event.dto'
 import { Event } from './entity/event.entity'
 import { EventUser } from './entity/event.user.entity'
 
@@ -21,7 +21,6 @@ export class EventService {
     const users = await this.eventRepository.find().catch((error) => {
       throw Error(error.message)
     })
-
     return users
   }
 
@@ -57,11 +56,29 @@ export class EventService {
     }
   }
 
+  async update(id: string, data: UpdateEventDto): Promise<Event> {
+    const evt = await this.findEventBy(id)
+
+    const event = await this.eventUserRepository
+      .createQueryBuilder()
+      .update(Event)
+      .set({ ...data })
+      .where('id = :id', { id: evt.id })
+      .returning('*')
+      .updateEntity(true)
+      .execute()
+      .catch((error) => {
+        throw new Error(error.message)
+      })
+
+    return event.raw[0]
+  }
+
   async delete(id: string): Promise<void> {
     //Just user check if event exists
     const event = await this.findEventBy(id)
     try {
-      await this.eventRepository.remove(event as Event)
+      await this.eventRepository.remove(event)
     } catch (error) {
       throw new Error(error.message)
     }
