@@ -17,26 +17,26 @@ export class EventService {
     private userService: UserService
   ) {}
 
-  async findAll(): Promise<Event[] | Error> {
+  async findAll(): Promise<Event[]> {
     const users = await this.eventRepository.find().catch((error) => {
-      return Error(error.message)
+      throw Error(error.message)
     })
 
     return users
   }
 
-  async findEventBy(id: string): Promise<Event | Error> {
+  async findEventBy(id: string): Promise<Event> {
     const event = await this.eventRepository.findOneBy({ id }).catch((error) => {
-      return Error(error.message)
+      throw Error(error.message)
     })
 
     if (!event) {
       throw new NotFoundException('Event not found!')
     }
-    return event
+    return event as Event
   }
 
-  async create(data: CreateEventDto): Promise<any | Error> {
+  async create(data: CreateEventDto): Promise<Event> {
     const user = await this.userService.findUserBy(data.userId)
 
     try {
@@ -53,34 +53,17 @@ export class EventService {
 
       return savedEvent
     } catch (error) {
-      return new Error(error.message)
+      throw new Error(error.message)
     }
   }
 
-  async insertUserEvent(eventId: string, userId: string): Promise<Event | Error> {
-    try {
-      const event = await this.findEventBy(eventId)
-      const user = await this.userService.findUserBy(userId)
-
-      const eventUser = new EventUser()
-      eventUser.user = user as User
-      eventUser.event = event as Event
-      eventUser.isConfirmed = true
-      eventUser.isEventOwner = true
-      eventUser.userIdOwner = 'event.events[0].userIdOwner'
-      await this.eventUserRepository.save(eventUser)
-    } catch (error) {
-      return new Error(error.message)
-    }
-  }
-
-  async delete(id: string): Promise<void | Error> {
+  async delete(id: string): Promise<void> {
     //Just user check if event exists
     const event = await this.findEventBy(id)
     try {
       await this.eventRepository.remove(event as Event)
     } catch (error) {
-      return new Error(error.message)
+      throw new Error(error.message)
     }
   }
 }

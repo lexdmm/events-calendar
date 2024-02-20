@@ -11,23 +11,23 @@ export class UserService {
     private userRepository: Repository<User>
   ) {}
 
-  async findAll(): Promise<User[] | Error> {
+  async findAll(): Promise<User[]> {
     const users = await this.userRepository
       .find()
       .then()
       .catch((error) => {
-        return Error(error.message)
+        throw Error(error.message)
       })
 
     return users
   }
 
-  async findUserBy(id: string): Promise<User | Error> {
+  async findUserBy(id: string): Promise<User> {
     const user = await this.userRepository
       .findOneBy({ id })
       .then()
       .catch((error) => {
-        return Error(error.message)
+        throw Error(error.message)
       })
 
     if (!user) {
@@ -36,7 +36,7 @@ export class UserService {
     return user
   }
 
-  async create(data: CreateUserDto): Promise<User | Error> {
+  async create(data: CreateUserDto): Promise<User> {
     try {
       const dataUser = {
         ...data,
@@ -46,11 +46,11 @@ export class UserService {
       const user = this.userRepository.create(dataUser)
       return await this.userRepository.save(user)
     } catch (error) {
-      return new Error(error.message)
+      throw new Error(error.message)
     }
   }
 
-  async update(id: string, data: UpdateUserDto): Promise<User | Error> {
+  async update(id: string, data: UpdateUserDto): Promise<User> {
     try {
       const user = await this.findUserBy(id)
       await this.userRepository.update(user, { ...data }).catch((error) => {
@@ -58,16 +58,16 @@ export class UserService {
       })
       return this.userRepository.create({ ...user, ...data })
     } catch (error) {
-      return new Error(error.message)
+      throw new Error(error.message)
     }
   }
 
-  async delete(id: string): Promise<void | Error> {
+  async delete(id: string): Promise<void> {
     try {
       const user = await this.findUserBy(id)
       await this.userRepository.delete(user)
     } catch (error) {
-      return new Error(error.message)
+      throw new Error(error.message)
     }
   }
 }
