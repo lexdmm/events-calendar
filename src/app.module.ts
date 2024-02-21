@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { join } from 'path'
 import { AuthModule } from './auth/auth.module'
+import { UserEventModule } from './event-user/event.user.module'
 import { EventModule } from './event/event.module'
 import { UserModule } from './user/user.module'
 
@@ -30,7 +31,8 @@ import { UserModule } from './user/user.module'
     }),
     AuthModule,
     UserModule,
-    EventModule
+    EventModule,
+    UserEventModule
   ],
   controllers: [],
   providers: []

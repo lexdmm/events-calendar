@@ -3,12 +3,14 @@ import { Transform } from 'class-transformer'
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   NotEquals,
   ValidateIf
 } from 'class-validator'
+import { StatusEvent } from '../enum/event.enum'
 
 export class CreateEventDto {
   @IsString()
@@ -32,12 +34,20 @@ export class CreateEventDto {
   description: string
 
   @IsDate()
-  @IsNotEmpty({ message: 'The date cannot be empty' })
+  @IsNotEmpty({ message: 'The startDate cannot be empty' })
   @NotEquals(null)
-  @ValidateIf((value) => value.date !== undefined)
+  @ValidateIf((value) => value.startDate !== undefined)
   @Transform(({ value }) => new Date(value))
   @ApiProperty({ example: '2023/02/20' })
-  date: Date
+  startDate: Date
+
+  @IsDate()
+  @IsNotEmpty({ message: 'The endDate cannot be empty' })
+  @NotEquals(null)
+  @ValidateIf((value) => value.startDate !== undefined)
+  @Transform(({ value }) => new Date(value))
+  @ApiProperty({ example: '2023/02/21' })
+  endDate: Date
 
   @IsDate()
   @Transform(({ value }) => {
@@ -76,6 +86,12 @@ export class UpdateEventDto {
   @IsOptional()
   description: string
 
+  @IsEnum(StatusEvent)
+  @NotEquals(null)
+  @ValidateIf((value) => value !== undefined)
+  @ApiProperty({ example: StatusEvent.ACTIVE, description: 'ACTIVE, CANCELED' })
+  status: StatusEvent
+
   @IsBoolean()
   @NotEquals(null)
   @ValidateIf((value) => value !== undefined)
@@ -83,12 +99,20 @@ export class UpdateEventDto {
   isPublic: boolean
 
   @IsDate()
-  @IsNotEmpty({ message: 'The date cannot be empty' })
+  @IsNotEmpty({ message: 'The startDate cannot be empty' })
   @NotEquals(null)
-  @ValidateIf((value) => value.date !== undefined)
+  @ValidateIf((value) => value.startDate !== undefined)
   @Transform(({ value }) => new Date(value))
   @ApiProperty({ example: '2023/02/20' })
-  date: Date
+  startDate: Date
+
+  @IsDate()
+  @IsNotEmpty({ message: 'The endDate cannot be empty' })
+  @NotEquals(null)
+  @ValidateIf((value) => value.endDate !== undefined)
+  @Transform(({ value }) => new Date(value))
+  @ApiProperty({ example: '2023/02/20' })
+  endDate: Date
 
   @IsDate()
   @Transform(({ value }) => {

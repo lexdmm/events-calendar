@@ -1,30 +1,24 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
 import {
-  ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger'
 import { CreateEventDto, UpdateEventDto } from './dto/event.dto'
-import { AddEventUserDto } from './dto/event.user.dto'
 import { Event } from './entity/event.entity'
-import { EventUser } from './entity/event.user.entity'
 import { EventService } from './event.service'
-import { EventUserService } from './event.user.service'
+import { IResponseEventUser } from './interface/event.user.interface'
 
 @ApiTags('events')
 @Controller('event')
 export class EventController {
-  constructor(
-    private readonly eventService: EventService,
-    private readonly eventUserService: EventUserService
-  ) {}
+  constructor(private readonly eventService: EventService) {}
 
   @Get()
   @ApiResponse({
     status: 200,
-    description: 'Returns all events.',
+    description: 'Return all events.',
     type: Event,
     isArray: true
   })
@@ -39,6 +33,14 @@ export class EventController {
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
   findEventBy(@Param('id') id: string): Promise<Event> {
     return this.eventService.findEventBy(id)
+  }
+
+  @Get(':userid/all')
+  @ApiResponse({ status: 200, description: 'Returns a event by user ID.', type: Event })
+  @ApiNotFoundResponse({ description: 'Event not found!' })
+  @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
+  findEventByUser(@Param('userid') userId: string): Promise<IResponseEventUser[]> {
+    return this.eventService.findEventByUser(userId)
   }
 
   @Post()
@@ -56,27 +58,11 @@ export class EventController {
     return this.eventService.update(id, data)
   }
 
-  @Delete(':id')
+  @Delete(':id/:ownerid')
   @ApiResponse({ status: 200 })
   @ApiNotFoundResponse({ description: 'Event not found!' })
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
-  delete(@Param('id') id: string): Promise<void> {
-    return this.eventService.delete(id)
-  }
-
-  //----------------------------------
-  @Post('user/add')
-  @ApiResponse({ status: 201, description: 'add a new user to the event.', type: Event })
-  @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
-  @ApiBadRequestResponse({ description: 'This user has already been added to the event.' })
-  addUserEvent(@Body() data: AddEventUserDto): Promise<EventUser> {
-    return this.eventUserService.addUserEvent(data)
-  }
-
-  @Patch('user/update')
-  @ApiResponse({ status: 201, description: 'updates user status in event', type: Event })
-  @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
-  updateUserEventConfirmed(@Body() data: AddEventUserDto): Promise<EventUser> {
-    return this.eventUserService.updateUserEventConfirmed(data)
+  delete(@Param('id') id: string, @Param('ownerid') ownerId: string): Promise<void> {
+    return this.eventService.delete(id, ownerId)
   }
 }

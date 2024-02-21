@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { AddEventUserDto } from './dto/event.user.dto'
 import { EventUser } from './entity/event.user.entity'
+import { StatusUserEvent } from './enum/event.user.enum'
 
 @Injectable()
 export class EventUserService {
@@ -28,7 +29,10 @@ export class EventUserService {
     eventUser.userId = data.userId
     eventUser.eventId = arrEventUser[0].eventId
     eventUser.userIdOwner = arrEventUser[0].userIdOwner
-    eventUser.isConfirmed = true
+    eventUser.status =
+      data.eventId === arrEventUser[0].userIdOwner
+        ? StatusUserEvent.CONFIRMED
+        : StatusUserEvent.UNCONFIRMED
     eventUser.isEventOwner = false
     await this.eventUserRepository.save(eventUser).catch((error) => {
       throw new Error(error.message)
@@ -40,16 +44,16 @@ export class EventUserService {
   /**
    * @description updates user status in event
    * @param AddEventUserDto
-   * @returns
+   * @returns EventUser
    */
-  async updateUserEventConfirmed(data: AddEventUserDto): Promise<EventUser> {
+  async updateStatus(data: AddEventUserDto): Promise<EventUser> {
     const evtUser = await this.findEventUserBy(data.eventId, data.userId)
 
     const eventUser = await this.eventUserRepository
       .createQueryBuilder()
       .update(EventUser)
       .set({
-        isConfirmed: (evtUser[0].isConfirmed = !evtUser[0].isConfirmed)
+        status: data.status
       })
       .where('id = :id', { id: evtUser[0].id })
       .returning('*')
@@ -62,7 +66,8 @@ export class EventUserService {
     return eventUser.raw[0]
   }
 
-  //Private methods------------------------------------
+  //-----------------Private methods-------------------
+
   /**
    * @description returns a list of event users
    * @param eventId
