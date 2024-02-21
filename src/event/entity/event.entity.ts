@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { EventUser } from './event.user.entity'
+import { EventUser } from '../../event-user/entity/event.user.entity'
 
 @Entity()
 export class Event {
@@ -7,7 +7,7 @@ export class Event {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ default: false })
+  @Column({ default: true })
   isPublic: boolean
 
   @Column({ length: 250, nullable: false })
@@ -16,8 +16,15 @@ export class Event {
   @Column({ type: 'text', default: '' })
   description: string
 
+  @Index()
+  @Column({ nullable: false })
+  status: string
+
   @Column({ nullable: false, type: 'date' })
-  date: Date
+  startDate: Date
+
+  @Column({ nullable: false, type: 'date' })
+  endDate: Date
 
   @Column({ nullable: false, type: 'time' })
   startTime: Date
@@ -25,6 +32,9 @@ export class Event {
   @Column({ nullable: false, type: 'time' })
   endTime: Date
 
-  @OneToMany(() => EventUser, (event) => event.event)
-  eventEvents: EventUser[]
+  @OneToMany(() => EventUser, (event) => event.event, {
+    cascade: ['remove', 'update'],
+    orphanedRowAction: 'delete'
+  })
+  events: EventUser[]
 }

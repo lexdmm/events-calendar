@@ -1,4 +1,4 @@
-import { EventUser } from 'src/event/entity/event.user.entity'
+import { EventUser } from 'src/event-user/entity/event.user.entity'
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity()
@@ -18,5 +18,5 @@ export class User {
   email: string
 
   @OneToMany(() => EventUser, (eventUser) => eventUser.user)
-  userEvents: EventUser[]
+  users: EventUser[]
 }
