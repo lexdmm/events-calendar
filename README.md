@@ -109,7 +109,7 @@ Then just click on the "Continue" button:
 ![login](https://github.com/lexdmm/events-calendar/blob/main/readme/2login.png)
 
 
-When you click continue, just copy and paste the token that appears on your console, **be careful, your token is sensitive information**:
+When you click continue, just **copy and paste the token** that appears on your console, **be careful, your token is sensitive information**:
 
 Now just enter your token in Swagger authorization to be able to use the back-end routes.
 
@@ -133,8 +133,11 @@ Service that manipulates users
 ```
 
 1 - GET [http://localhost:3000/user](http://localhost:3000/user): returns all registered users. Note that there is no user registration because it happens at login. When logging in, the user is automatically registered.
+
 2 - GET [http://localhost:3000/user/id](http://localhost:3000/user/id): Returns the user by ID.
+
 3 - PATCH [http://localhost:3000/user/id](http://localhost:3000/user/id): Change the user by ID.
+
 4 - DELETE [http://localhost:3000/user/id](http://localhost:3000/user/id): Delete the user by ID.
 
 
@@ -158,11 +161,17 @@ It is in this service that we will see events and how to manipulate them. The ev
 ```
 
 1 - GET [http://localhost:3000/event](http://localhost:3000/event): returns all registered events. 
+
 2 - GET [http://localhost:3000/event/userid/all](http://localhost:3000/event/userid/all): Unlike the previous service, this one returns all events from the informed user. 
+
 3 - GET [http://localhost:3000/event/id](http://localhost:3000/event/id): Returns the event by ID.
+
 4 - POST [http://localhost:3000/event/id](http://localhost:3000/event/id): Inserts a new event according to the period informed.
+
 5 - PATCH [http://localhost:3000/event/id](http://localhost:3000/event/id): Make changes to the event by ID.
+
 6 - DELETE [http://localhost:3000/event/id/ownerid](http://localhost:3000/event/id/ownerid): Deletes the user by their ID. Only the user who owns the event can delete (ownerid) their event.
+
 
 ##### 3 - Event-Users
 This service is specifically used to insert one or more users into an event belonging to another user. In short, it shares the event with users.
@@ -179,7 +188,12 @@ A user can have 3 statuses in an event:
 ```
 
 1 - POST [http://localhost:3000/user/event/add](http://localhost:3000/user/event/add): Adds the user to the event.
+
 2 - PATCH [http://localhost:3000/user/event/update](http://localhost:3000/user/event/update): Change user status to event. 
 
 
 ##### 4 - Auth-Google
+These are the services that communicate with Google's federated login. As already stated, they cannot be executed by swagger without returning an error, because of Google's callbacks.
+
+1 - POST [http://localhost:3000/auth/login](http://localhost:3000/auth/login): As reported previously.
+2 - POST [http://localhost:3000/auth/logout](http://localhost:3000/auth/logout): The moment you run this service, you will be logged out of Google and redirected to log in again. Logging off any swagger endpoint will return a 401 "Unauthorized" error.
