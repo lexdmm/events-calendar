@@ -111,15 +111,75 @@ Then just click on the "Continue" button:
 
 When you click continue, just copy and paste the token that appears on your console, **be careful, your token is sensitive information**:
 
-![login](https://github.com/lexdmm/events-calendar/blob/main/readme/token.png)
-
-
 Now just enter your token in Swagger authorization to be able to use the back-end routes.
 
-![login](https://github.com/lexdmm/events-calendar/blob/main/readme/swaggerauth.png)
+![swagger](https://github.com/lexdmm/events-calendar/blob/main/readme/swaggerauth.png)
 
 
 ## Swagger
 Come back Swagger [http://localhost:3000/api](http://localhost:3000/api)
+Now let's check how each route works.
 
 ##### 1 - Users
+Service that manipulates users
+
+```bash
+{
+    "id": "01cf563f-818a-42f6-b146-019382a8f4d3",
+    "providerId": "111260650121185072906",
+    "name": "Jhon Piper",
+    "email": "piper@test.com"
+}
+```
+
+1 - GET [http://localhost:3000/user](http://localhost:3000/user): returns all registered users. Note that there is no user registration because it happens at login. When logging in, the user is automatically registered.
+2 - GET [http://localhost:3000/user/id](http://localhost:3000/user/id): Returns the user by ID.
+3 - PATCH [http://localhost:3000/user/id](http://localhost:3000/user/id): Change the user by ID.
+4 - DELETE [http://localhost:3000/user/id](http://localhost:3000/user/id): Delete the user by ID.
+
+
+##### 2 - Event
+It is in this service that we will see events and how to manipulate them. The event has two statuses:
+- ACTIVE: meaning the event is active;
+- CANCELED: means that it has been canceled or its validity has ended.
+
+```bash
+{
+  "title": "Event title",
+  "description": "Event descritption",
+  "status": "ACTIVE",
+  "startDate": "2023/02/20",
+  "endDate": "2023/02/21",
+  "startTime": "14:30:00",
+  "endTime": "15:30:00",
+  "id": "f177c13a-70cc-4a87-9c38-f0c1fe3727e6",
+  "isPublic": true
+}
+```
+
+1 - GET [http://localhost:3000/event](http://localhost:3000/event): returns all registered events. 
+2 - GET [http://localhost:3000/event/userid/all](http://localhost:3000/event/userid/all): Unlike the previous service, this one returns all events from the informed user. 
+3 - GET [http://localhost:3000/event/id](http://localhost:3000/event/id): Returns the event by ID.
+4 - POST [http://localhost:3000/event/id](http://localhost:3000/event/id): Inserts a new event according to the period informed.
+5 - PATCH [http://localhost:3000/event/id](http://localhost:3000/event/id): Make changes to the event by ID.
+6 - DELETE [http://localhost:3000/event/id/ownerid](http://localhost:3000/event/id/ownerid): Deletes the user by their ID. Only the user who owns the event can delete (ownerid) their event.
+
+##### 3 - Event-Users
+This service is specifically used to insert one or more users into an event belonging to another user. In short, it shares the event with users.
+A user can have 3 statuses in an event:
+- CONFIRMED: means that it is confirmed to the event;
+- MAYBE: means that he may participate in the event;
+- UNCONFIRMED: means that he will not participate in the event.
+```bash
+{
+  "eventId": "63b7551c-d1f0-4770-a523-44e15d0948ed",
+  "userId": "cbe82850-3eaa-4c37-aeb2-700f4ad6c15c",
+  "status": "CONFIRMED"
+}
+```
+
+1 - POST [http://localhost:3000/user/event/add](http://localhost:3000/user/event/add): Adds the user to the event.
+2 - PATCH [http://localhost:3000/user/event/update](http://localhost:3000/user/event/update): Change user status to event. 
+
+
+##### 4 - Auth-Google
