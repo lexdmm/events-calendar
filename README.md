@@ -7,6 +7,13 @@ In the application we find 4 modules, they are:
 3 - **event**: records calendar events with date and time period;
 4 - **event-user**: module that creates the relationship between users and participation in their respective events.
 
+The database structure looked like this:
+
+![login](https://github.com/lexdmm/events-calendar/blob/main/readme/database.png)
+
+
+With this approach, there is an intermediate association table that manages the relationships between users and events. This can be more efficient in terms of storage space and can improve the performance of complex queries, especially when dealing with large amounts of data.
+
 ## Requirements 
 Framework Backend: [NestJS](https://nestjs.com/)
 Node.js: Use the latest stable version of [Node.js](https://nodejs.org/en).
