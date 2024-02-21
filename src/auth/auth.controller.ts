@@ -2,6 +2,7 @@ import { Controller, Get, Req, Res, UnauthorizedException, UseGuards } from '@ne
 import { ConfigService } from '@nestjs/config'
 import {
   ApiBadRequestResponse,
+  ApiExcludeEndpoint,
   ApiInternalServerErrorResponse,
   ApiResponse,
   ApiTags
@@ -28,6 +29,7 @@ export class AuthController {
 
   @Get('callback')
   @UseGuards(AuthOauthGuard)
+  @ApiExcludeEndpoint()
   async googleLoginCallback(@Req() req: any, @Res() res: Response) {
     const googleAccessToken = req.user.accessToken
     const googleRefreshToken = req.user.refreshToken
@@ -40,6 +42,7 @@ export class AuthController {
 
   @Get('profile')
   @UseGuards(AuthOauthGuard)
+  @ApiExcludeEndpoint()
   async getProfile(@Req() req: any) {
     const accessToken = req.cookies['access_token']
     if (accessToken) {
@@ -49,7 +52,7 @@ export class AuthController {
   }
 
   @Get('logout')
-  @ApiResponse({ status: 200, description: 'Google Logout' })
+  @ApiResponse({ status: 200, description: 'Google Logout, dont work swagger, open in browser' })
   @ApiBadRequestResponse({ status: 401, description: 'Error: Unauthorized' })
   async logout(@Req() req, @Res() res: Response) {
     const refreshToken = req.cookies['refresh_token']
