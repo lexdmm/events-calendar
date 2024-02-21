@@ -2,9 +2,13 @@
 [Events-Calendar](https://github.com/lexdmm/events-calendar) This application was created so that users can register their events in a calendar. Where each event can have several participating users.
 
 In the application we find 4 modules, they are:
+
 1 - **auth**: responsible for federated authentication with Google;
+
 2 - **user**: module created to register users and manipulate users;
+
 3 - **event**: records calendar events with date and time period;
+
 4 - **event-user**: module that creates the relationship between users and participation in their respective events.
 
 The database structure looked like this:
