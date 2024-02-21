@@ -85,4 +85,30 @@ docker compose start
 ```bash
 yarn run start:dev
 ```
-After completing all the steps above, you will be able to see the swagger documentation with the APIS documentation for use. Access can be done at the url [http://localhost:3000/api](http://localhost:3000/api)
+When running the project, the message **"Events calendar service connected on port 3000"** should appear in the console.
+![console](https://github.com/lexdmm/events-calendar/blob/main/readme/bashstart.png)
+
+## Login
+After completing all the steps above, you will be able to see the **Swagger** documentation with the APIS documentation for use. Access can be done at the url [http://localhost:3000/api](http://localhost:3000/api)
+
+**ATTENTION: You will not be able to access any notes unless you log in. Login is federated to Google.**
+
+As login is done via IDP, **the route cannot be executed directly in Swagger**, the login and logout endpoints are only informative in Swagger.
+
+When logging in, simply enter the login URL in the address bar of your preferred browser.
+
+The login route will be like this in swagger: [http://localhost:3000/auth/login](http://localhost:3000/auth/login)
+
+When accessing the endpoint, the standard Google screen will be available, just log in with your account and follow the Google flow.
+![login](https://github.com/lexdmm/events-calendar/blob/main/readme/1login.png)
+Then just click on the "Continue" button:
+![login](https://github.com/lexdmm/events-calendar/blob/main/readme/2login.png)
+When you click continue, just copy and paste the token that appears on your console, **be careful, your token is sensitive information**:
+![login](https://github.com/lexdmm/events-calendar/blob/main/readme/token.png)
+Now just enter your token in Swagger authorization to be able to use the back-end routes.
+![login](https://github.com/lexdmm/events-calendar/blob/main/readme/swaggerauth.png)
+
+## Swagger
+Come back Swagger [http://localhost:3000/api](http://localhost:3000/api)
+
+##### 1 - Users
