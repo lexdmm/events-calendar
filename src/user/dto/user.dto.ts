@@ -16,7 +16,7 @@ export class UserDto {
 
   @IsNotEmpty()
   @NotEquals(null)
-  providerName: string
+  name: string
 
   @IsEmail()
   @IsNotEmpty()

@@ -36,6 +36,16 @@ export class UserService {
     return user
   }
 
+  async findUserByProviderId(providerId: string): Promise<User> {
+    const user = await this.userRepository
+      .findOneBy({ providerId })
+      .then()
+      .catch((error) => {
+        throw Error(error.message)
+      })
+    return user
+  }
+
   async create(data: CreateUserDto): Promise<User> {
     try {
       const dataUser = {

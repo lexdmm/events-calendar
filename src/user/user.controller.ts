@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiInternalServerErrorResponse,
@@ -7,7 +7,7 @@ import {
   ApiTags
 } from '@nestjs/swagger'
 import { AuthGuardToken } from '../auth/auth.guardToken'
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto'
+import { UpdateUserDto } from './dto/user.dto'
 import { User } from './entity/user.entity'
 import { UserService } from './user.service'
 
@@ -39,7 +39,7 @@ export class UserController {
   async findUserBy(@Param('id') id: string): Promise<User> {
     return this.userService.findUserBy(id)
   }
-
+  /*
   @Post()
   @ApiResponse({ status: 201, description: 'Create a new user.', type: User })
   @ApiInternalServerErrorResponse({ description: 'Error: Internal Server Error' })
@@ -48,6 +48,7 @@ export class UserController {
   async create(@Body() user: CreateUserDto): Promise<User> {
     return this.userService.create(user)
   }
+  */
 
   @Patch(':id')
   @ApiResponse({ status: 200, description: 'Update a user by ID.', type: User })
