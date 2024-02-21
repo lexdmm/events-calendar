@@ -100,13 +100,24 @@ When logging in, simply enter the login URL in the address bar of your preferred
 The login route will be like this in swagger: [http://localhost:3000/auth/login](http://localhost:3000/auth/login)
 
 When accessing the endpoint, the standard Google screen will be available, just log in with your account and follow the Google flow.
+
 ![login](https://github.com/lexdmm/events-calendar/blob/main/readme/1login.png)
+
+
 Then just click on the "Continue" button:
+
 ![login](https://github.com/lexdmm/events-calendar/blob/main/readme/2login.png)
+
+
 When you click continue, just copy and paste the token that appears on your console, **be careful, your token is sensitive information**:
+
 ![login](https://github.com/lexdmm/events-calendar/blob/main/readme/token.png)
+
+
 Now just enter your token in Swagger authorization to be able to use the back-end routes.
+
 ![login](https://github.com/lexdmm/events-calendar/blob/main/readme/swaggerauth.png)
+
 
 ## Swagger
 Come back Swagger [http://localhost:3000/api](http://localhost:3000/api)
