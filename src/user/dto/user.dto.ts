@@ -1,5 +1,32 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsOptional, IsString, NotEquals, ValidateIf } from 'class-validator'
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  NotEquals,
+  ValidateIf
+} from 'class-validator'
+
+export class UserDto {
+  @IsNotEmpty()
+  @NotEquals(null)
+  providerId: string
+
+  @IsNotEmpty()
+  @NotEquals(null)
+  name: string
+
+  @IsEmail()
+  @IsNotEmpty()
+  @NotEquals(null)
+  @ValidateIf((object, value) => value !== undefined)
+  email: string
+
+  @IsBoolean()
+  isActive: boolean
+}
 
 export class CreateUserDto {
   @IsString()
